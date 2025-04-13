@@ -28,11 +28,10 @@
 
         img:hover {
             transform: scale(1.05);
-            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3);
         }
 
         .burger-menu {
-            display: none;
+            display: none;  /* Hidden by default */
             position: fixed;
             top: 20px;
             left: 20px;
@@ -468,7 +467,6 @@
 </div>
 
 <div class="universe-menu">
-    <span class="close-button">×</span>
     <h2>Выбор вселенных</h2>
     <div class="universe-button" onclick="openPopup('universe1')">Земля-03.1</div>
     <div class="universe-button" onclick="openPopup('universe2')">Земля-93</div>
@@ -563,6 +561,13 @@
 
 <script>
     let currentNewsIndex = 0;
+    const burgerMenu = document.querySelector('.burger-menu');
+    const universeMenu = document.querySelector('.universe-menu');
+    const universeMenuCloseButton = document.querySelector('.universe-menu .close-button');
+
+    document.addEventListener('DOMContentLoaded', function() {
+        burgerMenu.style.display = 'none'; // Hide initially on page load.
+    });
 
     function login(event) {
         event.preventDefault();
@@ -572,6 +577,9 @@
         if (username === "SPORTZNAK_SECRETS" && password === "1993") {
             document.getElementById('login-form').style.display = 'none';
             document.getElementById('main-page').style.display = 'block';
+
+            // Show the burger menu after successful login
+            burgerMenu.style.display = 'block';
         } else {
             alert('Неверный логин или пароль!');
         }
@@ -641,12 +649,9 @@
         if (event.key === '+') {
             document.getElementById('login-form').style.display = 'none';
             document.getElementById('main-page').style.display = 'block';
+            burgerMenu.style.display = 'block';
         }
     });
-
-    const burgerMenu = document.querySelector('.burger-menu');
-    const universeMenu = document.querySelector('.universe-menu');
-    const universeMenuCloseButton = document.querySelector('.universe-menu .close-button');
 
     burgerMenu.addEventListener('click', () => {
         burgerMenu.classList.toggle('active');
