@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -6,13 +7,13 @@
     <title>Sportznak: The Archives</title>
     <style>
         body {
-            background-color: black;
+            background-color: black; /* Установлен чёрный фон */
             color: white;
             font-family: "Courier New", Courier, monospace;
             text-align: center;
         }
         img {
-            width: 300px;
+            width: 500px; /* Увеличен размер изображений */
             height: auto;
         }
         .universe-button {
@@ -29,26 +30,109 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: white;
-            color: black;
+            background-color: black; /* Фон окон разделов чёрный */
+            color: white;
             padding: 20px;
-            border: 2px solid black;
+            border: 2px solid white;
             z-index: 100;
+            border-radius: 10px; /* Закруглённые углы */
+            animation: fadeIn 0.5s; /* Плавная анимация появления */
         }
         .popup.active {
             display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
         }
         .close-button {
             cursor: pointer;
             color: red;
             font-weight: bold;
         }
+        #login-form {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 50px auto;
+            width: 300px;
+            border: 1px solid white; /* Рамка вокруг окна авторизации */
+        }
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid white;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: black;
+            width: 100%;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            background-color: gray;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: darkgray;
+        }
+        #news-container {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .news-item {
+            display: none;
+            text-align: center;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .news-item.active {
+            display: block;
+            opacity: 1;
+            animation: slideIn 0.5s; /* Плавная анимация для новостей */
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .date {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+        .arrow-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 30px;
+            color: white;
+        }
+        .settings-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 30px;
+            color: white;
+        }
     </style>
 </head>
 <body>
 
+<!-- Кнопка настроек -->
+<button class="settings-button">&#9881;</button>
+
 <!-- Окно авторизации -->
-<div id="login-form" style="display: block;">
+<div id="login-form">
     <h1>Авторизация</h1>
     <form onsubmit="return login(event)">
         <input type="text" id="username" placeholder="Логин" required><br>
@@ -60,34 +144,53 @@
 <!-- Главная страница -->
 <div id="main-page" style="display: none;">
     <img src="https://i.pinimg.com/736x/b9/20/dd/b920dd8e3e65ca35f15b1de14dde01eb.jpg" alt="Логотип Sportznak">
-    <div>
-        <img src="https://i.pinimg.com/736x/8e/18/9f/8e189fedb3ff9d101972be32cc6ff472.jpg" alt="Картинка 1">
-        <p>Дата: 07.08.1993</p>
-        <img src="https://i.pinimg.com/736x/05/8b/c7/058bc7ac2b3c42cb622c156f186f51ab.jpg" alt="Картинка 2">
-        <p>Дата: 05.07.1993</p>
-        <img src="https://i.pinimg.com/474x/aa/85/d8/aa85d88832b5f85ea7332b501a0fc8de.jpg" alt="Картинка 3">
-        <p>Дата: 13.08.1993</p>
+    <div id="news-container">
+        <div class="news-item active">
+            <img src="https://i.pinimg.com/736x/8e/18/9f/8e189fedb3ff9d101972be32cc6ff472.jpg" alt="Картинка 1">
+            <p class="date">Дата: 07.08.1993</p>
+        </div>
+        <div class="news-item">
+            <img src="https://i.pinimg.com/736x/05/8b/c7/058bc7ac2b3c42cb622c156f186f51ab.jpg" alt="Картинка 2">
+            <p class="date">Дата: 05.07.1993</p>
+        </div>
+        <div class="news-item">
+            <img src="https://i.pinimg.com/474x/aa/85/d8/aa85d88832b5f85ea7332b501a0fc8de.jpg" alt="Картинка 3">
+            <p class="date">Дата: 13.08.1993</p>
+        </div>
     </div>
+    <h2>Новости</h2>
+    <p></p>
+    <p></p>
+    <p>13.04.2025: Наш сайт запущен в альфа версии 0.1!</p>
+    <button class="arrow-button" onclick="prevNews()">&#8592;</button>
+    <button class="arrow-button" onclick="nextNews()">&#8594;</button>
     <h2>Выбор вселенных</h2>
     <div>
         <div class="universe-button" onclick="openPopup('universe1')">Земля-03.1</div>
-        <div class="universe-button" onclick="openPopup('universe2')">Земля-03.2</div>
+        <div class="universe-button" onclick="openPopup('universe2')">Земля-93</div>
         <div class="universe-button" onclick="openPopup('universe3')">Земля-52</div>
-        <div class="universe-button" onclick="openPopup('universe4')">Земля-93</div>
+        <div class="universe-button" onclick="openPopup('universe4')">Земля-03.2</div>
+        <div class="universe-button" onclick="openPopup('video')">Видеозаписи и фото</div> <!-- Новый раздел -->
     </div>
     <footer>
-        <p>1998-2025 Sportznak SPK</p>
+        <p>© 1998-2025 СПК "Спортзнак". Все права защищены.</p>
     </footer>
 </div>
 
 <!-- Окна для вселенных -->
 <div id="universe1" class="popup">
     <span class="close-button" onclick="closePopup('universe1')">Закрыть</span>
-    <p>Текст для Земля-03.1</p>
+    <h3>Разделы Земля-03.1</h3>
+    <p>(кликни по гифке)</p>
+    <a href="https://drive.google.com/drive/folders/184P42Djyaf-XUTazu400UfmQ6Y555c5w?usp=drive_link" target="_blank">
+        <img src="https://media.tenor.com/Jg6U-vtaPEkAAAAM/sonic-tails.gif" alt="GIF Земля-03.1">
+    </a>
 </div>
 <div id="universe2" class="popup">
     <span class="close-button" onclick="closePopup('universe2')">Закрыть</span>
-    <p>Текст для Земля-03.2</p>
+    <a href="https://drive.google.com/drive/folders/1erQ_Ro0tJLUx9oA3uXB2zXYmkbDz0oew?usp=drive_link" target="_blank">
+        <img src="https://media.tenor.com/Jg6U-vtaPEkAAAAM/sonic-tails.gif" alt="GIF Земля-03.2">
+    </a>
 </div>
 <div id="universe3" class="popup">
     <span class="close-button" onclick="closePopup('universe3')">Закрыть</span>
@@ -95,10 +198,19 @@
 </div>
 <div id="universe4" class="popup">
     <span class="close-button" onclick="closePopup('universe4')">Закрыть</span>
-    <p>Текст для Земля-93</p>
+    <p>Текст для Земля-03.2</p>
+</div>
+<div id="video" class="popup">
+    <span class="close-button" onclick="closePopup('video')">Закрыть</span>
+    <p>Видеозаписи и фото</p>
+    <a href="https://drive.google.com/drive/folders/1HVUp1dmkS1b_IJWWBihu5qjy7gU38d5v?usp=drive_link" target="_blank">
+        <img src="https://static.wikia.nocookie.net/70800c37-b1c2-404d-8201-91e3aef985c3/scale-to-width/755" alt="GIF Видеозаписи и фото">
+    </a>
 </div>
 
 <script>
+    let currentNewsIndex = 0;
+
     function login(event) {
         event.preventDefault();
         const username = document.getElementById('username').value;
@@ -117,7 +229,34 @@
     }
 
     function closePopup(id) {
-        document.getElementById(id).classList.remove('active');
+        const popup = document.getElementById(id);
+        popup.classList.remove('active');
+        popup.style.animation = 'fadeOut 0.5s'; // Плавная анимация закрытия
+        setTimeout(() => {
+            popup.style.animation = ''; // Сброс анимации после завершения
+        }, 500);
+    }
+
+    function showNews(index) {
+        const newsItems = document.querySelectorAll('.news-item');
+        newsItems.forEach((item, i) => {
+            item.classList.remove('active');
+            if (i === index) {
+                item.classList.add('active');
+            }
+        });
+    }
+
+    function nextNews() {
+        const newsItems = document.querySelectorAll('.news-item');
+        currentNewsIndex = (currentNewsIndex + 1) % newsItems.length;
+        showNews(currentNewsIndex);
+    }
+
+    function prevNews() {
+        const newsItems = document.querySelectorAll('.news-item');
+        currentNewsIndex = (currentNewsIndex - 1 + newsItems.length) % newsItems.length;
+        showNews(currentNewsIndex);
     }
 </script>
 
