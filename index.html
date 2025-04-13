@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sportznak: The Archives</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: "Courier New", Courier, monospace;
+            text-align: center;
+        }
+        img {
+            width: 300px;
+            height: auto;
+        }
+        .universe-button {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px;
+            background-color: gray;
+            border: 1px solid white;
+            cursor: pointer;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            color: black;
+            padding: 20px;
+            border: 2px solid black;
+            z-index: 100;
+        }
+        .popup.active {
+            display: block;
+        }
+        .close-button {
+            cursor: pointer;
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Окно авторизации -->
+<div id="login-form" style="display: block;">
+    <h1>Авторизация</h1>
+    <form onsubmit="return login(event)">
+        <input type="text" id="username" placeholder="Логин" required><br>
+        <input type="password" id="password" placeholder="Пароль" required><br>
+        <button type="submit">Войти</button>
+    </form>
+</div>
+
+<!-- Главная страница -->
+<div id="main-page" style="display: none;">
+    <img src="https://i.pinimg.com/736x/b9/20/dd/b920dd8e3e65ca35f15b1de14dde01eb.jpg" alt="Логотип Sportznak">
+    <div>
+        <img src="https://i.pinimg.com/736x/8e/18/9f/8e189fedb3ff9d101972be32cc6ff472.jpg" alt="Картинка 1">
+        <p>Дата: 07.08.1993</p>
+        <img src="https://i.pinimg.com/736x/05/8b/c7/058bc7ac2b3c42cb622c156f186f51ab.jpg" alt="Картинка 2">
+        <p>Дата: 05.07.1993</p>
+        <img src="https://i.pinimg.com/474x/aa/85/d8/aa85d88832b5f85ea7332b501a0fc8de.jpg" alt="Картинка 3">
+        <p>Дата: 13.08.1993</p>
+    </div>
+    <h2>Выбор вселенных</h2>
+    <div>
+        <div class="universe-button" onclick="openPopup('universe1')">Земля-03.1</div>
+        <div class="universe-button" onclick="openPopup('universe2')">Земля-03.2</div>
+        <div class="universe-button" onclick="openPopup('universe3')">Земля-52</div>
+        <div class="universe-button" onclick="openPopup('universe4')">Земля-93</div>
+    </div>
+    <footer>
+        <p>1998-2025 Sportznak SPK</p>
+    </footer>
+</div>
+
+<!-- Окна для вселенных -->
+<div id="universe1" class="popup">
+    <span class="close-button" onclick="closePopup('universe1')">Закрыть</span>
+    <p>Текст для Земля-03.1</p>
+</div>
+<div id="universe2" class="popup">
+    <span class="close-button" onclick="closePopup('universe2')">Закрыть</span>
+    <p>Текст для Земля-03.2</p>
+</div>
+<div id="universe3" class="popup">
+    <span class="close-button" onclick="closePopup('universe3')">Закрыть</span>
+    <p>Текст для Земля-52</p>
+</div>
+<div id="universe4" class="popup">
+    <span class="close-button" onclick="closePopup('universe4')">Закрыть</span>
+    <p>Текст для Земля-93</p>
+</div>
+
+<script>
+    function login(event) {
+        event.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        if (username === "SPORTZNAK_SECRETS" && password === "1993") {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('main-page').style.display = 'block';
+        } else {
+            alert('Неверный логин или пароль!');
+        }
+    }
+
+    function openPopup(id) {
+        document.getElementById(id).classList.add('active');
+    }
+
+    function closePopup(id) {
+        document.getElementById(id).classList.remove('active');
+    }
+</script>
+
+</body>
+</html>
