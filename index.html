@@ -1,119 +1,369 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sportznak: The Archives</title>
+    <title>Sportznak: The Archive</title>
+    <link rel="icon" href="sportznak_lore_icon.png" type="image/png">
     <style>
         body {
-            background-color: black; /* Установлен чёрный фон */
+            background-color: black;
             color: white;
             font-family: "Courier New", Courier, monospace;
             text-align: center;
+            overflow-x: hidden;
+            animation: fadeIn 1s ease-in-out;
         }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         img {
-            width: 500px; /* Увеличен размер изображений */
+            width: 500px;
             height: auto;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         }
+
+        img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3);
+        }
+
+        .burger-menu {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+            z-index: 101;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .burger-menu:hover {
+          transform: scale(1.1);
+        }
+
+        .bar {
+            width: 30px;
+            height: 4px;
+            background-color: white;
+            margin: 6px 0;
+            transition: 0.4s;
+        }
+
+        .burger-menu.active .bar:nth-child(1) {
+            transform: rotate(-45deg) translate(-6px, 6px);
+        }
+
+        .burger-menu.active .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .burger-menu.active .bar:nth-child(3) {
+            transform: rotate(45deg) translate(-6px, -6px);
+        }
+
+        .universe-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 100;
+            text-align: center;
+            padding-top: 60px;
+            animation: slideInLeft 0.3s ease-in-out;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100%);
+            }
+
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        .universe-menu.active {
+            display: block;
+        }
+
+        .universe-menu .universe-button {
+            display: block;
+            margin: 20px auto;
+        }
+
+        .universe-menu .close-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            color: #ff4d4d;
+            font-weight: bold;
+            font-size: 24px;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        .universe-menu .close-button:hover {
+            color: #ff0000;
+            transform: rotate(90deg);
+        }
+
         .universe-button {
             display: inline-block;
             margin: 10px;
-            padding: 10px;
-            background-color: gray;
-            border: 1px solid white;
+            padding: 10px 20px;
+            background-color: #333;
+            border: 1px solid #555;
+            color: white;
             cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s ease-in-out, transform 0.2s ease, box-shadow 0.3s ease-in-out;
+            animation: pulse 2s infinite alternate;
         }
+
+        .universe-button:hover {
+            background-color: #555;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        @media (max-width: 768px) {
+            img {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .burger-menu {
+                display: block;
+            }
+
+            .universe-button {
+                display: block;
+                width: 80%;
+                margin: 10px auto;
+            }
+
+            #main-page > .universe-buttons-container {
+                display: none;
+            }
+        }
+
         .popup {
             display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: black; /* Фон окон разделов чёрный */
+            background-color: rgba(0, 0, 0, 0.9);
             color: white;
             padding: 20px;
-            border: 2px solid white;
-            z-index: 100;
-            border-radius: 10px; /* Закруглённые углы */
-            animation: fadeIn 0.5s; /* Плавная анимация появления */
+            border: 2px solid #555;
+            z-index: 102;
+            border-radius: 10px;
+            animation: zoomIn 0.5s;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
         }
+
+         @keyframes zoomIn {
+            from {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
         .popup.active {
             display: block;
         }
+
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
+
         @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
+            from {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            to {
+                opacity: 0;
+                transform: scale(0.5);
+            }
         }
+
         .close-button {
             cursor: pointer;
-            color: red;
+            color: #ff4d4d;
             font-weight: bold;
+            transition: color 0.3s ease, transform 0.3s ease;
         }
+
+        .close-button:hover {
+            color: #ff0000;
+            transform: rotate(180deg);
+        }
+
         #login-form {
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.8);
             padding: 20px;
             border-radius: 10px;
             margin: 50px auto;
             width: 300px;
-            border: 1px solid white; /* Рамка вокруг окна авторизации */
+            border: 1px solid #555;
+            animation: bounceInDown 0.7s;
         }
+
+        @keyframes bounceInDown {
+            0%, 60%, 75%, 90%, 100% {
+                transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+            }
+            0% {
+                opacity: 0;
+                transform: translateY(-3000px);
+            }
+            60% {
+                opacity: 1;
+                transform: translateY(25px);
+            }
+            75% {
+                transform: translateY(-10px);
+            }
+            90% {
+                transform: translateY(5px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
         input {
             margin: 10px 0;
             padding: 10px;
-            border: 1px solid white;
+            border: 1px solid #555;
             border-radius: 5px;
             background-color: rgba(255, 255, 255, 0.9);
             color: black;
-            width: 100%;
+            width: 95%;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
+
+        input:focus {
+            border-color: #aaa;
+            outline: none;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
         button {
-            padding: 10px;
+            padding: 10px 20px;
             border: none;
-            background-color: gray;
+            background-color: #555;
             color: white;
             cursor: pointer;
             border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
         }
+
         button:hover {
-            background-color: darkgray;
+            background-color: #777;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3);
         }
+
         #news-container {
             overflow: hidden;
             position: relative;
             width: 100%;
             max-width: 800px;
             margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #555;
+            border-radius: 10px;
+            animation: fadeInUp 1s ease-in-out;
         }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .news-item {
             display: none;
             text-align: center;
-            transition: opacity 0.5s ease-in-out;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            padding: 10px;
         }
+
         .news-item.active {
             display: block;
             opacity: 1;
-            animation: slideIn 0.5s; /* Плавная анимация для новостей */
+            animation: slideIn 0.5s;
         }
+
         @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
+
         .date {
             margin-top: 10px;
             font-size: 18px;
+            color: #aaa;
+            animation: pulseText 1.5s infinite alternate;
         }
+
+        @keyframes pulseText {
+            0% { color: #aaa; }
+            100% { color: #ddd; }
+        }
+
         .arrow-button {
             background: none;
             border: none;
             cursor: pointer;
             font-size: 30px;
             color: white;
+            transition: transform 0.3s ease, color 0.3s ease;
         }
+
+        .arrow-button:hover {
+            transform: scale(1.2) rotate(360deg);
+            color: #ccc;
+        }
+
         .settings-button {
             position: absolute;
             top: 20px;
@@ -123,15 +373,112 @@
             cursor: pointer;
             font-size: 30px;
             color: white;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.9);
+            padding-top: 50px;
+            animation: slideUp 0.2s ease-in-out;
+        }
+
+        .modal-content {
+            background-color: #111;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #555;
+            width: 80%;
+            max-width: 1200px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content img {
+            max-width: 90%;
+            max-height: 90%;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            transform: rotate(180deg);
+        }
+
+        .news-item img {
+            cursor: pointer;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #222;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: #999;
+            cursor: default;
+            animation: fadeIn 1s ease-in-out;
         }
     </style>
 </head>
 <body>
 
-<!-- Кнопка настроек -->
-<button class="settings-button">&#9881;</button>
+<div class="burger-menu">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+</div>
 
-<!-- Окно авторизации -->
+<div class="universe-menu">
+    <span class="close-button">×</span>
+    <h2>Выбор вселенных</h2>
+    <div class="universe-button" onclick="openPopup('universe1')">Земля-03.1</div>
+    <div class="universe-button" onclick="openPopup('universe2')">Земля-93</div>
+    <div class="universe-button" onclick="openPopup('universe3')">Земля-52</div>
+    <div class="universe-button" onclick="openPopup('universe4')">Земля-03.2</div>
+    <div class="universe-button" onclick="openPopup('video')">Видеозаписи и фото</div>
+</div>
+
+<button class="settings-button">⚙</button>
+
 <div id="login-form">
     <h1>Авторизация</h1>
     <form onsubmit="return login(event)">
@@ -141,20 +488,19 @@
     </form>
 </div>
 
-<!-- Главная страница -->
 <div id="main-page" style="display: none;">
     <img src="https://i.pinimg.com/736x/b9/20/dd/b920dd8e3e65ca35f15b1de14dde01eb.jpg" alt="Логотип Sportznak">
     <div id="news-container">
         <div class="news-item active">
-            <img src="https://i.pinimg.com/736x/8e/18/9f/8e189fedb3ff9d101972be32cc6ff472.jpg" alt="Картинка 1">
+            <img src="https://i.pinimg.com/736x/8e/18/9f/8e189fedb3ff9d101972be32cc6ff472.jpg" alt="Картинка 1" onclick="openImageModal('https://i.pinimg.com/736x/8e/18/9f/8e189fedb3ff9d101972be32cc6ff472.jpg')">
             <p class="date">Дата: 07.08.1993</p>
         </div>
         <div class="news-item">
-            <img src="https://i.pinimg.com/736x/05/8b/c7/058bc7ac2b3c42cb622c156f186f51ab.jpg" alt="Картинка 2">
+            <img src="https://i.pinimg.com/736x/05/8b/c7/058bc7ac2b3c42cb622c156f186f51ab.jpg" alt="Картинка 2" onclick="openImageModal('https://i.pinimg.com/736x/05/8b/c7/058bc7ac2b3c42cb622c156f186f51ab.jpg')">
             <p class="date">Дата: 05.07.1993</p>
         </div>
         <div class="news-item">
-            <img src="https://i.pinimg.com/474x/aa/85/d8/aa85d88832b5f85ea7332b501a0fc8de.jpg" alt="Картинка 3">
+            <img src="https://i.pinimg.com/474x/aa/85/d8/aa85d88832b5f85ea7332b501a0fc8de.jpg" alt="Картинка 3" onclick="openImageModal('https://i.pinimg.com/474x/aa/85/d8/aa85d88832b5f85ea7332b501a0fc8de.jpg')">
             <p class="date">Дата: 13.08.1993</p>
         </div>
     </div>
@@ -162,22 +508,29 @@
     <p></p>
     <p></p>
     <p>13.04.2025: Наш сайт запущен в альфа версии 0.1!</p>
-    <button class="arrow-button" onclick="prevNews()">&#8592;</button>
-    <button class="arrow-button" onclick="nextNews()">&#8594;</button>
-    <h2>Выбор вселенных</h2>
-    <div>
+    <button class="arrow-button" onclick="prevNews()">←</button>
+    <button class="arrow-button" onclick="nextNews()">→</button>
+
+    <div class="universe-buttons-container">
         <div class="universe-button" onclick="openPopup('universe1')">Земля-03.1</div>
         <div class="universe-button" onclick="openPopup('universe2')">Земля-93</div>
         <div class="universe-button" onclick="openPopup('universe3')">Земля-52</div>
         <div class="universe-button" onclick="openPopup('universe4')">Земля-03.2</div>
-        <div class="universe-button" onclick="openPopup('video')">Видеозаписи и фото</div> <!-- Новый раздел -->
+        <div class="universe-button" onclick="openPopup('video')">Видеозаписи и фото</div>
     </div>
+
     <footer>
         <p>© 1998-2025 СПК "Спортзнак". Все права защищены.</p>
     </footer>
 </div>
 
-<!-- Окна для вселенных -->
+<div id="imageModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('imageModal')">×</span>
+        <img id="modalImage" src="" alt="Full Image">
+    </div>
+</div>
+
 <div id="universe1" class="popup">
     <span class="close-button" onclick="closePopup('universe1')">Закрыть</span>
     <h3>Разделы Земля-03.1</h3>
@@ -225,15 +578,16 @@
     }
 
     function openPopup(id) {
-        document.getElementById(id).classList.add('active');
+        const popup = document.getElementById(id);
+        popup.classList.add('active');
     }
 
     function closePopup(id) {
         const popup = document.getElementById(id);
         popup.classList.remove('active');
-        popup.style.animation = 'fadeOut 0.5s'; // Плавная анимация закрытия
+        popup.style.animation = 'fadeOut 0.5s';
         setTimeout(() => {
-            popup.style.animation = ''; // Сброс анимации после завершения
+            popup.style.animation = '';
         }, 500);
     }
 
@@ -258,6 +612,52 @@
         currentNewsIndex = (currentNewsIndex - 1 + newsItems.length) % newsItems.length;
         showNews(currentNewsIndex);
     }
+
+    function openImageModal(imageSrc) {
+        const modalImage = document.getElementById('modalImage');
+        if (modalImage) {
+             modalImage.src = imageSrc;
+             openModal('imageModal');
+        }
+    }
+
+    function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) modal.style.display = "block";
+    }
+
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target.classList.contains('modal')) {
+            closeModal(event.target.id);
+        }
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === '+') {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('main-page').style.display = 'block';
+        }
+    });
+
+    const burgerMenu = document.querySelector('.burger-menu');
+    const universeMenu = document.querySelector('.universe-menu');
+    const universeMenuCloseButton = document.querySelector('.universe-menu .close-button');
+
+    burgerMenu.addEventListener('click', () => {
+        burgerMenu.classList.toggle('active');
+        universeMenu.classList.toggle('active');
+    });
+
+    universeMenuCloseButton.addEventListener('click', () => {
+        burgerMenu.classList.remove('active');
+        universeMenu.classList.remove('active');
+    });
+
 </script>
 
 </body>
